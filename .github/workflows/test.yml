@@ -30,15 +30,15 @@ jobs:
     
     - name: Verify required imports
       run: |
-        python -c "import deep_translator; print('✓ deep_translator OK')"
+        python -c "import deep_translator; print('deep_translator OK')"
     
     - name: Verify optional imports
       run: |
         python -c "try:
             import lxml
-            print('✓ lxml OK')
+            print('lxml OK')
         except ImportError:
-            print('⚠ lxml not available (optional)')"
+            print('lxml not available (optional)')"
       continue-on-error: true
     
     - name: Check script syntax
