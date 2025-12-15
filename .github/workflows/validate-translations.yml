@@ -33,8 +33,13 @@ jobs:
           elif [ -d "Localization" ]; then
             echo "workspace=Localization" >> $GITHUB_OUTPUT
           else
-            workspace=$(find . -maxdepth 2 -name "*.xcloc" -type d | head -1 | xargs dirname)
-            echo "workspace=${workspace:-.}" >> $GITHUB_OUTPUT
+            xcloc_dir=$(find . -maxdepth 2 -name "*.xcloc" -type d | head -1)
+            if [ -n "$xcloc_dir" ]; then
+              workspace=$(dirname "$xcloc_dir")
+              echo "workspace=$workspace" >> $GITHUB_OUTPUT
+            else
+              echo "workspace=." >> $GITHUB_OUTPUT
+            fi
           fi
       
       - name: Validate translations (dry-run)

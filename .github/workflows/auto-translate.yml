@@ -62,11 +62,15 @@ jobs:
             echo "workspace=." >> $GITHUB_OUTPUT
           else
             # Find first directory containing .xcloc folders
-            workspace=$(find . -maxdepth 2 -name "*.xcloc" -type d | head -1 | xargs dirname)
-            if [ -n "$workspace" ]; then
+            xcloc_dir=$(find . -maxdepth 2 -name "*.xcloc" -type d | head -1)
+            if [ -n "$xcloc_dir" ]; then
+              workspace=$(dirname "$xcloc_dir")
               echo "workspace=$workspace" >> $GITHUB_OUTPUT
             else
               echo "Error: No .xcloc folders found"
+              echo "Searched in: $(pwd)"
+              echo "Directory contents:"
+              ls -la
               exit 1
             fi
           fi
