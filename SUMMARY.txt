@@ -180,12 +180,12 @@ Follow these steps (detailed in GITHUB_CHECKLIST.md):
    $ git commit -m "Initial commit: v1.0.0"
 
 2. Create GitHub Repository
-   └─ Repository name: xliff-localization-translator
+   └─ Repository name: Auto-Translate-localizables
    └─ Description: "🌍 Auto-translate XLIFF files with GUI"
    └─ Topics: localization, translation, xliff, ios, python
 
 3. Push to GitHub
-   $ git remote add origin https://github.com/YOUR_USERNAME/xliff-localization-translator.git
+   $ git remote add origin https://github.com/EhsanAzish80/Auto-Translate-localizables.git
    $ git branch -M main
    $ git push -u origin main
 

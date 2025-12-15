@@ -37,8 +37,8 @@ The app provides:
 
 1. **Clone the repository:**
 ```bash
-git clone https://github.com/yourusername/xliff-translator.git
-cd xliff-translator
+git clone https://github.com/EhsanAzish80/Auto-Translate-localizables
+cd Auto-Translate-localizables
 ```
 
 2. **Install dependencies:**
@@ -218,7 +218,7 @@ Always review translations before production use.
 ## 📞 Support
 
 If you encounter any issues or have questions:
-- Open an [Issue](https://github.com/yourusername/xliff-translator/issues)
+- Open an [Issue](https://github.com/EhsanAzish80/Auto-Translate-localizables/issues)
 - Check the [documentation](README_TRANSLATION.md)
 - Review existing issues and discussions
 

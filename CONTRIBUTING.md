@@ -24,8 +24,8 @@ Feature requests are welcome! Please include:
 
 1. **Fork the repository**
    ```bash
-   git clone https://github.com/yourusername/xliff-translator.git
-   cd xliff-translator
+   git clone https://github.com/EhsanAzish80/Auto-Translate-localizables.git
+   cd Auto-Translate-localizables
    ```
 
 2. **Create a feature branch**
@@ -77,8 +77,8 @@ Feature requests are welcome! Please include:
 ### Setup
 ```bash
 # Clone your fork
-git clone https://github.com/yourusername/xliff-translator.git
-cd xliff-translator
+git clone https://github.com/EhsanAzish80/Auto-Translate-localizables.git
+cd Auto-Translate-localizables
 
 # Install dependencies
 pip3 install -r requirements.txt

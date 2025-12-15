@@ -29,11 +29,11 @@ except ImportError:
 try:
     from lxml import etree as ET
     USING_LXML = True
-    print("✓ Using lxml for better XLIFF support")
+    print("[OK] Using lxml for better XLIFF support")
 except ImportError:
     import xml.etree.ElementTree as ET
     USING_LXML = False
-    print("⚠️  Using standard xml library (consider installing lxml: pip3 install lxml)")
+    print("[WARNING] Using standard xml library (consider installing lxml: pip3 install lxml)")
 
 # Language code mapping from Xcode locale codes to Google Translate codes
 # Supports 100+ languages for maximum Xcode localization coverage
@@ -138,7 +138,7 @@ class XLIFFTranslator:
             
             return translated
         except Exception as e:
-            print(f"  ⚠️  Translation error for '{text[:50]}...': {e}")
+            print(f"  [WARNING] Translation error for '{text[:50]}...': {e}")
             return text
     
     def process_xliff_file(self, xliff_path: Path, target_lang: str, dry_run: bool = False) -> int:
@@ -239,25 +239,25 @@ class XLIFFTranslator:
                         # Restore original if corrupted
                         with open(xliff_path, 'w', encoding='utf-8') as f:
                             f.write(original_content)
-                        print(f"  ⚠️  Restored original file (validation failed)")
+                        print(f"  [WARNING] Restored original file (validation failed)")
                         return 0
                 except Exception as e:
                     # Restore original on any error
                     with open(xliff_path, 'w', encoding='utf-8') as f:
                         f.write(original_content)
-                    print(f"  ⚠️  Restored original file: {e}")
+                    print(f"  [WARNING] Restored original file: {e}")
                     return 0
             
             return translated_count
             
         except Exception as e:
-            print(f"  ❌ Error processing {xliff_path}: {e}")
+            print(f"  [ERROR] Error processing {xliff_path}: {e}")
             # Restore original content if we have it
             if 'original_content' in locals():
                 try:
                     with open(xliff_path, 'w', encoding='utf-8') as f:
                         f.write(original_content)
-                    print(f"  ↩️  Restored original file")
+                    print(f"  [INFO] Restored original file")
                 except:
                     pass
             return 0
@@ -267,22 +267,22 @@ class XLIFFTranslator:
         lang_folder = self.workspace_dir / f"{lang_code}.xcloc"
         
         if not lang_folder.exists():
-            print(f"⚠️  Folder not found: {lang_folder}")
+            print(f"[WARNING] Folder not found: {lang_folder}")
             return {}
         
         # Get target language code
         target_lang = LANGUAGE_MAP.get(lang_code)
         if not target_lang:
-            print(f"⚠️  No language mapping for: {lang_code}")
+            print(f"[WARNING] No language mapping for: {lang_code}")
             return {}
         
         # Skip English
         if lang_code == 'en':
-            print(f"⏭️  Skipping English (source language)")
+            print(f"[SKIP] Skipping English (source language)")
             return {}
         
         print(f"\n{'='*60}")
-        print(f"🌍 Processing {lang_code.upper()} → {target_lang}")
+        print(f"Processing {lang_code.upper()} -> {target_lang}")
         print(f"{'='*60}")
         
         results = {}
@@ -291,14 +291,14 @@ class XLIFFTranslator:
         xliff_files = list(lang_folder.glob("**/*.xliff"))
         
         if not xliff_files:
-            print(f"  ⚠️  No XLIFF files found in {lang_folder}")
+            print(f"  [WARNING] No XLIFF files found in {lang_folder}")
             return {}
         
         for xliff_file in xliff_files:
-            print(f"\n📄 Processing: {xliff_file.name}")
+            print(f"\n[FILE] Processing: {xliff_file.name}")
             count = self.process_xliff_file(xliff_file, target_lang, dry_run)
             results[xliff_file.name] = count
-            print(f"  ✅ Translated {count} entries")
+            print(f"  [OK] Translated {count} entries")
         
         return results
     
@@ -307,7 +307,7 @@ class XLIFFTranslator:
         skip_languages = skip_languages or ['en', 'ar', 'cs']  # Skip English and already done Arabic
         
         print(f"\n{'='*60}")
-        print(f"🚀 XLIFF Bulk Translation")
+        print(f"XLIFF Bulk Translation")
         print(f"{'='*60}")
         print(f"Workspace: {self.workspace_dir}")
         print(f"Skipping: {', '.join(skip_languages)}")
@@ -323,7 +323,7 @@ class XLIFFTranslator:
             lang_code = lang_folder.name.replace('.xcloc', '')
             
             if lang_code in skip_languages:
-                print(f"⏭️  Skipping {lang_code} (in skip list)")
+                print(f"[SKIP] Skipping {lang_code} (in skip list)")
                 continue
             
             try:
@@ -343,7 +343,7 @@ class XLIFFTranslator:
     def print_summary(self, stats: Dict[str, Dict[str, int]]):
         """Print translation summary."""
         print(f"\n{'='*60}")
-        print(f"📊 TRANSLATION SUMMARY")
+        print(f"TRANSLATION SUMMARY")
         print(f"{'='*60}\n")
         
         total_translations = 0
@@ -351,10 +351,10 @@ class XLIFFTranslator:
         for lang_code, files in stats.items():
             lang_total = sum(files.values())
             total_translations += lang_total
-            print(f"{lang_code.upper():8} → {lang_total:4} entries translated")
+            print(f"{lang_code.upper():8} -> {lang_total:4} entries translated")
         
         print(f"\n{'='*60}")
-        print(f"✨ TOTAL: {total_translations} entries translated across {len(stats)} languages")
+        print(f"TOTAL: {total_translations} entries translated across {len(stats)} languages")
         print(f"{'='*60}\n")
 
 

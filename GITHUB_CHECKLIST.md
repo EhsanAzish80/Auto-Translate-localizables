@@ -53,7 +53,7 @@ git commit -m "Initial commit: XLIFF Localization Translator v1.0.0"
 
 ### 3. Connect and Push
 ```bash
-git remote add origin https://github.com/YOUR_USERNAME/xliff-localization-translator.git
+git remote add origin https://github.com/EhsanAzish80/Auto-Translate-localizables.git
 git branch -M main
 git push -u origin main
 ```
@@ -91,8 +91,8 @@ First stable release of XLIFF Localization Translator!
 
 ### Installation
 ```bash
-git clone https://github.com/YOUR_USERNAME/xliff-localization-translator.git
-cd xliff-localization-translator
+git clone https://github.com/EhsanAzish80/Auto-Translate-localizables.git
+cd Auto-Translate-localizables
 ./setup.sh
 ```
 
@@ -171,7 +171,7 @@ A Python GUI app that auto-translates iOS localization files to 30+ languages wh
 • CLI + GUI modes
 • Open source (MIT)
 
-https://github.com/YOUR_USERNAME/xliff-localization-translator
+https://github.com/EhsanAzish80/Auto-Translate-localizables
 
 #Python #iOS #Localization #OpenSource
 ```

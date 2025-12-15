@@ -196,10 +196,10 @@ git add .
 git commit -m "Initial commit: XLIFF Localization Translator v1.0.0"
 
 # 2. Create GitHub repo at: https://github.com/new
-#    Name: xliff-localization-translator
+#    Name: Auto-Translate-localizables
 
 # 3. Push to GitHub
-git remote add origin https://github.com/YOUR_USERNAME/xliff-localization-translator.git
+git remote add origin https://github.com/EhsanAzish80/Auto-Translate-localizables.git
 git branch -M main
 git push -u origin main
 

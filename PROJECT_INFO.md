@@ -193,7 +193,7 @@ Built with:
 
 ---
 
-**Author:** XLIFF Translator Contributors  
+**Author:** Ehsan Azish (@ehsanazish80)  
 **Created:** December 2025  
 **Last Updated:** December 15, 2025  
 **Status:** Active Development
