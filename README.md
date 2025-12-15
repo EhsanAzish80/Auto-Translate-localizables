@@ -170,7 +170,7 @@ lxml>=4.9.0             # Better XLIFF/XML handling
 
 ### Project Structure
 ```
-xliff-translator/
+Auto-Translate-localizables/
 ├── localization_app.py      # GUI application
 ├── translate_xliff.py        # CLI tool
 ├── requirements.txt          # Python dependencies
