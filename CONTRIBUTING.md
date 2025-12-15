@@ -1,12 +1,21 @@
-# Contributing to XLIFF Localization Translator
+# Contributing to auto-translate-localizables
 
 Thank you for your interest in contributing! 🎉
+
+## Quick Links
+
+- 📖 [Main Documentation](README.md)
+- 🐛 [Report a Bug](https://github.com/EhsanAzish80/Auto-Translate-localizables/issues)
+- 💡 [Request a Feature](https://github.com/EhsanAzish80/Auto-Translate-localizables/issues)
+- 💬 [Discussions](https://github.com/EhsanAzish80/Auto-Translate-localizables/discussions)
+
+---
 
 ## How to Contribute
 
 ### Reporting Bugs
 
-If you find a bug, please open an issue with:
+If you find a bug, please [open an issue](https://github.com/EhsanAzish80/Auto-Translate-localizables/issues) with:
 - Clear description of the problem
 - Steps to reproduce
 - Expected vs actual behavior
@@ -19,35 +28,98 @@ Feature requests are welcome! Please include:
 - Clear use case
 - Expected behavior
 - Why it would be useful to others
+- Any implementation ideas
 
-### Contributing Code
+---
 
-1. **Fork the repository**
-   ```bash
-   git clone https://github.com/EhsanAzish80/Auto-Translate-localizables.git
-   cd Auto-Translate-localizables
-   ```
+## Development Setup
 
-2. **Create a feature branch**
-   ```bash
-   git checkout -b feature/my-new-feature
-   ```
+### 1. Fork and Clone
 
-3. **Make your changes**
-   - Follow the existing code style
-   - Add comments for complex logic
-   - Update documentation if needed
+```bash
+git clone https://github.com/YOUR-USERNAME/Auto-Translate-localizables.git
+cd Auto-Translate-localizables
+```
 
-4. **Test your changes**
-   ```bash
-   # Test CLI
-   python3 translate_xliff.py --dry-run --workspace test/data
-   
-   # Test GUI
-   python3 localization_app.py
-   
-   # Verify syntax
-   python -m py_compile localization_app.py
+### 2. Install in Development Mode
+
+```bash
+# Install package in editable mode
+pip install -e .
+
+# Or use the install script
+./install_dev.sh
+
+# Install optional dev dependencies
+pip install -e ".[dev]"
+```
+
+### 3. Verify Installation
+
+```bash
+# Test CLI
+auto-translate-xcloc --version
+
+# Test Python import
+python -c "from auto_translate_localizables import XLIFFTranslator; print('✓')"
+```
+
+---
+
+## Making Changes
+
+### 1. Create a Feature Branch
+
+```bash
+git checkout -b feature/my-new-feature
+# or
+git checkout -b fix/bug-description
+```
+
+### 2. Code Style
+
+- Follow PEP 8 style guidelines
+- Use type hints where appropriate
+- Add docstrings for public functions
+- Keep functions focused and testable
+
+```python
+def process_xliff_file(
+    self, 
+    xliff_path: Path, 
+    target_lang: str,
+    dry_run: bool = False
+) -> Tuple[int, int]:
+    """
+    Process a single XLIFF file.
+    
+    Args:
+        xliff_path: Path to XLIFF file
+        target_lang: Target language code
+        dry_run: If True, don't save changes
+        
+    Returns:
+        (translated_count, error_count)
+    """
+    # Implementation
+```
+
+### 3. Test Your Changes
+
+```bash
+# Test CLI functionality
+auto-translate-xcloc --workspace ./test_data --dry-run
+
+# Test specific features
+python -c "
+from auto_translate_localizables import PlaceholderValidator
+result, error = PlaceholderValidator.validate('Test %@', 'Test %@')
+print(f'Valid: {result}')
+"
+
+# Check syntax
+python -m py_compile auto_translate_localizables/*.py
+```
    python -m py_compile translate_xliff.py
    ```
 

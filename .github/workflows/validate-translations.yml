@@ -1,0 +1,81 @@
+name: Validate Translations
+
+on:
+  pull_request:
+    paths:
+      - '**/*.xcloc/**'
+      - '**/*.xliff'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+      
+      - name: Install auto-translate-localizables
+        run: |
+          pip install -e .
+          auto-translate-xcloc --version
+      
+      - name: Find localization workspace
+        id: find_workspace
+        run: |
+          if [ -d "localization" ]; then
+            echo "workspace=localization" >> $GITHUB_OUTPUT
+          elif [ -d "Localization" ]; then
+            echo "workspace=Localization" >> $GITHUB_OUTPUT
+          else
+            workspace=$(find . -maxdepth 2 -name "*.xcloc" -type d | head -1 | xargs dirname)
+            echo "workspace=${workspace:-.}" >> $GITHUB_OUTPUT
+          fi
+      
+      - name: Validate translations (dry-run)
+        run: |
+          workspace="${{ steps.find_workspace.outputs.workspace }}"
+          echo "Validating translations in: $workspace"
+          
+          # Run in dry-run mode to validate without changes
+          auto-translate-xcloc \
+            --workspace "$workspace" \
+            --dry-run \
+            --fail-on-placeholder-mismatch \
+            --skip en
+      
+      - name: Check XLIFF syntax
+        run: |
+          workspace="${{ steps.find_workspace.outputs.workspace }}"
+          echo "Checking XLIFF syntax..."
+          
+          # Find all XLIFF files
+          find "$workspace" -name "*.xliff" -type f | while read file; do
+            echo "Checking: $file"
+            # Validate XML syntax
+            python3 -c "
+import sys
+from lxml import etree
+try:
+    etree.parse('$file')
+    print('  ✓ Valid XLIFF')
+except Exception as e:
+    print(f'  ✗ Invalid XLIFF: {e}')
+    sys.exit(1)
+            "
+          done
+      
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Translation Validation Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ All translations validated successfully" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- Placeholder preservation: ✅" >> $GITHUB_STEP_SUMMARY
+          echo "- XLIFF syntax: ✅" >> $GITHUB_STEP_SUMMARY

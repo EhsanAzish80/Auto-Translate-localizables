@@ -1,236 +1,473 @@
-# 🌍 XLIFF Localization Translator for Xcode
+# 🌍 auto-translate-localizables
 
-A standalone Python application with GUI for automatically translating Xcode XLIFF localization files. Perfect for iOS, macOS, watchOS, and tvOS projects with multiple language support.
+**Automates Xcode .xcloc localization using reproducible, CI-friendly machine translation—built for real iOS teams.**
 
-![Python Version](https://img.shields.io/badge/python-3.7+-blue.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
-![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-lightgrey.svg)
-![Xcode](https://img.shields.io/badge/Xcode-Localization-blue.svg)
-![Languages](https://img.shields.io/badge/languages-100+-green.svg)
-
-## ✨ Features
-
-- 🖥️ **User-Friendly GUI** - Simple Tkinter interface, no command line required
-- 🔍 **Auto-Detection** - Automatically finds all Xcode localization folders (.xcloc)
-- 🌐 **100+ Languages** - Supports all major languages with Google Translate
-- 🎯 **Xcode Compatible** - Works with iOS, macOS, watchOS, and tvOS projects
-- 🛡️ **Smart Translation** - Preserves placeholders (%@, %d), units (kg, ml), and special characters
-- ⚡ **Fast & Efficient** - Batch processing with progress tracking
-- 💾 **Safe** - Validates XLIFF structure for Xcode compatibility
-- 🌍 **Cross-Platform** - Works on macOS, Linux, and Windows
-- 🎯 **Selective Translation** - Choose which languages to translate
-
-## 📸 Screenshots
-
-### Main Interface
-The app provides:
-- Workspace folder selection
-- Automatic language detection
-- Default language selection
-- Multi-select target languages
-- Real-time translation log
-- Progress tracking
-
-## 🚀 Quick Start
-
-### Installation
-
-1. **Clone the repository:**
-```bash
-git clone https://github.com/EhsanAzish80/Auto-Translate-localizables
-cd Auto-Translate-localizables
-```
-
-2. **Install dependencies:**
-```bash
-pip3 install -r requirements.txt
-```
-
-### Running the App
-
-**GUI Mode (Recommended):**
-```bash
-python3 localization_app.py
-```
-
-**Command Line Mode:**
-```bash
-# Translate all languages
-python3 translate_xliff.py
-
-# Translate specific languages only
-python3 translate_xliff.py --only de fr ja
-
-# Dry run (preview without changes)
-python3 translate_xliff.py --dry-run
-```
-
-## 📖 Usage Guide
-
-### Using the GUI App
-
-1. **Select Workspace**
-   - Click "Browse..." to select your localization folder
-   - The folder should contain `.xcloc` subfolders
-
-2. **Auto-Detect Languages**
-   - App automatically detects all available languages
-   - Choose your default/source language (typically English)
-
-3. **Select Target Languages**
-   - Select which languages you want to translate to
-   - Multiple selection supported (Cmd/Ctrl + Click)
-
-4. **Start Translation**
-   - Click "🚀 Start Translation"
-   - Monitor progress in the log window
-   - Translation can be stopped anytime
-
-### Command Line Options
-
-```bash
-python3 translate_xliff.py [OPTIONS]
-
-Options:
-  -w, --workspace PATH    Path to localization workspace
-  -d, --dry-run          Preview mode (no changes)
-  -s, --skip LANGS       Languages to skip (default: en ar)
-  -o, --only LANGS       Only translate these languages
-```
-
-## 🗂️ Folder Structure
-
-Your localization workspace should look like:
-```
-localization/
-├── en.xcloc/
-│   └── Localizable.xliff
-├── de.xcloc/
-│   └── Localizable.xliff
-├── fr.xcloc/
-│   └── Localizable.xliff
-├── ja.xcloc/
-│   └── Localizable.xliff
-└── ...
-```
-
-## 🌐 Supported Languages (100+)
-
-### Major Languages
-| Code | Language | Code | Language | Code | Language |
-|------|----------|------|----------|------|----------|
-| ar | Arabic | hi | Hindi | pt-BR | Portuguese (Brazil) |
-| bn | Bengali | hu | Hungarian | ro | Romanian |
-| cs | Czech | id | Indonesian | ru | Russian |
-| da | Danish | it | Italian | sk | Slovak |
-| de | German | ja | Japanese | sv | Swedish |
-| el | Greek | ko | Korean | th | Thai |
-| en | English | nl | Dutch | tr | Turkish |
-| es | Spanish | pl | Polish | uk | Ukrainian |
-| fi | Finnish | pt | Portuguese | vi | Vietnamese |
-| fr | French | zh-Hans | Chinese (Simplified) | zh-Hant | Chinese (Traditional) |
-
-### Additional Languages
-Afrikaans, Albanian, Amharic, Armenian, Azerbaijani, Basque, Belarusian, Bosnian, Bulgarian, Catalan, Cebuano, Chichewa, Corsican, Croatian, Esperanto, Estonian, Filipino, Frisian, Galician, Georgian, Gujarati, Haitian Creole, Hausa, Hawaiian, Hebrew, Hmong, Icelandic, Igbo, Irish, Javanese, Kannada, Kazakh, Khmer, Kurdish, Kyrgyz, Lao, Latin, Latvian, Lithuanian, Luxembourgish, Macedonian, Malagasy, Malay, Malayalam, Maltese, Maori, Marathi, Mongolian, Myanmar, Nepali, Norwegian, Odia, Pashto, Persian, Punjabi, Samoan, Scots Gaelic, Serbian, Sesotho, Shona, Sindhi, Sinhala, Slovenian, Somali, Sundanese, Swahili, Tajik, Tamil, Telugu, Uyghur, Urdu, Uzbek, Welsh, Xhosa, Yiddish, Yoruba, Zulu
-
-**Total: 100+ languages supported for Xcode localization!**
-
-See [LANGUAGE_MAP](localization_app.py) for the complete mapping.
-
-## 🛡️ Translation Features
-
-### What's Preserved
-- ✅ **Placeholders**: `%@`, `%d`, `%lld`, `%1$@`, etc.
-- ✅ **Units**: kg, lbs, ml, oz, min
-- ✅ **Special Characters**: °C, °F, 💧
-- ✅ **Formatting**: Punctuation, spacing, newlines
-- ✅ **XLIFF Structure**: Valid XML for Xcode
-
-### Translation Logic
-The app only translates entries that:
-- Have no `<target>` element
-- Have empty `<target>` text
-- Are marked with `state="needs-review-l10n"`
-
-Already translated entries are **never** overwritten.
-
-## 📋 Requirements
-
-- Python 3.7 or higher
-- Internet connection (for Google Translate API)
-- macOS/Linux/Windows with Tkinter support
-
-### Dependencies
-```
-deep-translator>=1.11.4  # Google Translate API
-lxml>=4.9.0             # Better XLIFF/XML handling
-```
-
-## 🔧 Development
-
-### Project Structure
-```
-Auto-Translate-localizables/
-├── localization_app.py      # GUI application
-├── translate_xliff.py        # CLI tool
-├── requirements.txt          # Python dependencies
-├── README.md                 # This file
-├── README_TRANSLATION.md     # Detailed CLI docs
-├── LICENSE                   # MIT License
-└── .gitignore               # Git ignore rules
-```
-
-### Running Tests
-```bash
-# Test with dry run
-python3 translate_xliff.py --dry-run --workspace /path/to/test/folder
-```
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## ⚠️ Disclaimer
-
-This tool uses Google Translate API through the `deep-translator` library. Translation quality depends on:
-- Google Translate accuracy for the language pair
-- Context preservation in short strings
-- Placeholder and formatting complexity
-
-Always review translations before production use.
-
-## 🙏 Acknowledgments
-
-- Built with [deep-translator](https://github.com/nidhaloff/deep-translator) for Google Translate integration
-- Uses [lxml](https://lxml.de/) for robust XLIFF parsing
-- Inspired by the need to streamline iOS app localization
-
-## 📞 Support
-
-If you encounter any issues or have questions:
-- Open an [Issue](https://github.com/EhsanAzish80/Auto-Translate-localizables/issues)
-- Check the [documentation](README_TRANSLATION.md)
-- Review existing issues and discussions
-
-## 🗺️ Roadmap
-
-- [ ] Support for other translation services (DeepL, Azure)
-- [ ] Translation memory/cache
-- [ ] Batch workspace processing
-- [ ] Export translation statistics
-- [ ] Custom placeholder patterns
-- [ ] Translation quality scoring
+[![Python Version](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/)
+[![PyPI Version](https://img.shields.io/badge/pypi-v1.0.0-blue.svg)](https://pypi.org/project/auto-translate-localizables/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-lightgrey.svg)](https://github.com/EhsanAzish80/Auto-Translate-localizables)
 
 ---
 
-Made with ❤️ for the localization community
+## Why This Exists
+
+**Xcode exports `.xcloc`, but Apple provides no bulk translation workflow.** This tool fills that gap.
+
+If you've ever manually translated hundreds of localization strings, or copy-pasted between Xcode and Google Translate, you know the pain. This tool automates the entire workflow while maintaining safety and reproducibility.
+
+---
+
+## The Problem → Solution
+
+### Before 😤
+```
+1. Export .xcloc from Xcode
+2. Open each language's XLIFF file
+3. Copy string → Google Translate → Paste
+4. Repeat 500 times
+5. Hope you didn't break any %@ placeholders
+6. Import back into Xcode
+7. Build fails because placeholders got mangled
+```
+
+### After ✨
+```bash
+auto-translate-xcloc --workspace ./localization
+```
+
+**That's it.** All languages translated. Placeholders preserved. XLIFF structure validated. Ready for Xcode import.
+
+---
+
+## ✨ Features
+
+- **🎯 Zero Configuration** — Automatically detects languages and structure
+- **🛡️ Strict Placeholder Preservation** — Validates `%@`, `%d`, `{0}`, etc. are preserved exactly
+- **🌐 100+ Languages** — Supports all major languages via Google Translate
+- **⚡ CI-Friendly** — `--dry-run`, `--only-missing`, `--fail-on-placeholder-mismatch` modes
+- **🔍 Smart Translation** — Skips units (kg, ml), preserves formatting, handles special characters
+- **💾 Safe by Default** — Validates XLIFF structure, auto-restores on corruption
+- **📦 Proper Package** — Install via pip, use as CLI or Python library
+- **🎯 Xcode Compatible** — Works with iOS, macOS, watchOS, tvOS projects
+
+---
+
+## 🚀 Installation
+
+### Install from PyPI (recommended)
+```bash
+pip install auto-translate-localizables
+```
+
+### Install from source
+```bash
+git clone https://github.com/EhsanAzish80/Auto-Translate-localizables
+cd Auto-Translate-localizables
+pip install -e .
+```
+
+### Verify installation
+```bash
+auto-translate-xcloc --version
+```
+
+---
+
+## 📖 Usage
+
+### Basic Usage
+
+```bash
+# Translate all languages
+auto-translate-xcloc --workspace /path/to/localization
+
+# Dry run (see what would happen)
+auto-translate-xcloc --workspace ./localization --dry-run
+
+# Only translate missing strings (preserve existing)
+auto-translate-xcloc --workspace ./localization --only-missing
+```
+
+### Advanced Usage
+
+```bash
+# Translate specific languages only
+auto-translate-xcloc --workspace ./localization --only de fr es
+
+# Skip certain languages
+auto-translate-xcloc --workspace ./localization --skip en ar
+
+# CI mode: fail on placeholder mismatches
+auto-translate-xcloc --workspace ./localization --fail-on-placeholder-mismatch
+
+# List all supported languages
+auto-translate-xcloc --list-languages
+```
+
+### Expected Directory Structure
+
+```
+workspace/
+├── en.xcloc/
+│   └── Localized Contents/
+│       └── en.xliff
+├── de.xcloc/
+│   └── Localized Contents/
+│       └── de.xliff
+├── fr.xcloc/
+│   └── Localized Contents/
+│       └── fr.xliff
+└── es.xcloc/
+    └── Localized Contents/
+        └── es.xliff
+```
+
+This is the standard structure Xcode creates when you export localizations.
+
+---
+
+## 🔧 As a Python Library
+
+```python
+from auto_translate_localizables import XLIFFTranslator
+
+# Create translator
+translator = XLIFFTranslator(
+    workspace_dir="/path/to/localization",
+    fail_on_placeholder_mismatch=True
+)
+
+# Translate all languages
+results = translator.process_all_languages(
+    skip_languages=['en'],
+    dry_run=False,
+    only_missing=False
+)
+
+# Process specific language
+results = translator.process_language_folder('de', dry_run=False)
+
+# Check for errors
+if translator.errors:
+    for error in translator.errors:
+        print(f"Error: {error['file']}: {error['error']}")
+```
+
+---
+
+## 🎯 Workflow Integration
+
+### Xcode Export → Translate → Import
+
+```bash
+# 1. Export from Xcode
+# Product → Export Localizations...
+
+# 2. Translate
+auto-translate-xcloc --workspace ./LocalizationExport
+
+# 3. Import back to Xcode
+# Product → Import Localizations...
+```
+
+### With Version Control
+
+```bash
+# After exporting from Xcode
+git add localization/*.xcloc
+auto-translate-xcloc --workspace ./localization
+git diff  # Review translations
+git commit -m "Update translations"
+```
+
+---
+
+## 🤖 CI/CD Integration
+
+This repository includes **ready-to-use GitHub Actions** for automated translation workflows.
+
+### Included Workflows
+
+#### 1. Auto-Translate (`.github/workflows/auto-translate.yml`)
+
+Automatically translates localization files when English changes or on manual trigger.
+
+**Triggers:**
+- ✅ When `en.xcloc` files change
+- ✅ Manual workflow dispatch with options
+
+**Features:**
+- Creates Pull Request with translated strings
+- Validates placeholder preservation
+- Only translates missing strings by default
+- Configurable language selection
+
+**Manual Trigger Options:**
+```
+Languages: Specify "de fr es" or "all"
+Only missing: true/false
+Create PR: true/false (direct commit option)
+```
+
+#### 2. Validate Translations (`.github/workflows/validate-translations.yml`)
+
+Validates translation quality on Pull Requests.
+
+**Runs on:**
+- ✅ Any PR that modifies `.xcloc` or `.xliff` files
+
+**Validates:**
+- ✅ Placeholder preservation
+- ✅ XLIFF syntax correctness
+
+### Quick Setup
+
+The workflows are **already configured** in this repository. Just:
+
+1. **Push to GitHub** - workflows are ready to use
+2. **Make a change** to `en.xcloc` files - auto-translation triggers
+3. **Review the PR** - translations are validated and ready
+
+### Manual Trigger
+
+Go to **Actions** → **Auto-Translate Localizations** → **Run workflow**
+
+![GitHub Actions](https://img.shields.io/badge/GitHub-Actions-2088FF?logo=github-actions&logoColor=white)
+
+### Example Workflow Output
+
+```
+🌍 Auto-translate localization files
+
+✅ Translated 245 entries (0 errors)
+✅ Placeholder validation passed
+✅ XLIFF structure validated
+📝 Pull Request created: #123
+```
+
+---
+
+## 🛡️ Safety Features
+
+### Placeholder Preservation
+
+The tool **strictly validates** that placeholders are preserved:
+
+```python
+# Original
+"You have %d items in %@"
+
+# ✅ Valid translation (German)
+"Sie haben %d Artikel in %@"
+
+# ❌ Invalid - placeholder count mismatch
+"Sie haben Artikel in %@"  # Missing %d
+
+# ❌ Invalid - placeholder type changed
+"Sie haben %@ Artikel in %d"  # Swapped types
+```
+
+### XLIFF Validation
+
+- Validates XML structure before and after translation
+- Auto-restores original file if corruption detected
+- Preserves XML namespaces and attributes
+- Maintains Xcode-compatible formatting
+
+### Rate Limiting
+
+- Automatic delays between translations
+- Prevents Google Translate rate limiting
+- Configurable batch sizes
+
+---
+
+## 🌍 Supported Languages
+
+100+ languages supported. Run `auto-translate-xcloc --list-languages` for full list.
+
+Common examples:
+- 🇩🇪 German (`de`)
+- 🇫🇷 French (`fr`)
+- 🇪🇸 Spanish (`es`, `es-419`, `es-MX`)
+- 🇨🇳 Chinese Simplified (`zh-Hans`)
+- 🇹🇼 Chinese Traditional (`zh-Hant`)
+- 🇯🇵 Japanese (`ja`)
+- 🇰🇷 Korean (`ko`)
+- 🇷🇺 Russian (`ru`)
+- 🇵🇹 Portuguese (`pt`, `pt-BR`, `pt-PT`)
+- And many more...
+
+---
+
+## ⚠️ Important Disclaimers
+
+### Machine Translation
+
+**This tool uses Google Translate.** Output quality varies by language. Always have translations reviewed by native speakers before shipping to production.
+
+### Placeholder Limitations
+
+While the tool validates placeholder **preservation**, it cannot validate placeholder **position** correctness in all languages. Some languages require different word orders.
+
+### Rate Limits
+
+Google Translate has rate limits. For very large projects (1000+ strings), run with `--only-missing` on subsequent runs.
+
+---
+
+## 🔄 Development Workflow
+
+### Setting Up Development Environment
+
+```bash
+# Clone repository
+git clone https://github.com/EhsanAzish80/Auto-Translate-localizables
+cd Auto-Translate-localizables
+
+# Install in editable mode with dev dependencies
+pip install -e ".[dev]"
+
+# Run tests (when available)
+pytest
+
+# Format code
+black .
+
+# Type checking
+mypy auto_translate_localizables
+```
+
+### Package Structure
+
+```
+auto-translate-localizables/
+├── auto_translate_localizables/
+│   ├── __init__.py          # Package exports
+│   ├── cli.py               # CLI entry point
+│   ├── translator.py        # Core translation logic
+│   └── language_map.py      # Language code mappings
+├── pyproject.toml           # Modern Python packaging
+├── README.md
+└── LICENSE
+```
+
+---
+
+## 🎓 Examples
+
+### Example 1: First-Time Translation
+
+```bash
+# Export from Xcode to ~/Desktop/Localization
+# Run translation
+auto-translate-xcloc --workspace ~/Desktop/Localization
+
+# Output:
+# ============================================================
+# XLIFF Bulk Translation
+# ============================================================
+# Workspace: /Users/you/Desktop/Localization
+# Skipping: en
+# Mode: TRANSLATION
+# ============================================================
+# 
+# ============================================================
+# Processing DE -> de
+# ============================================================
+# 
+# [FILE] Localizable.xliff
+#   [✓] Translated 245 entries (0 errors)
+# 
+# [✓] de        ->  245 translated,    0 errors
+# 
+# ============================================================
+# TOTAL: 245 entries translated
+#        0 errors
+# ============================================================
+```
+
+### Example 2: Update Only Missing
+
+```bash
+# You've added 20 new strings to English
+auto-translate-xcloc --workspace ./localization --only-missing
+
+# Only translates the 20 new strings, preserves existing translations
+```
+
+### Example 3: CI Validation
+
+```bash
+# In CI pipeline
+auto-translate-xcloc \
+  --workspace ./localization \
+  --dry-run \
+  --fail-on-placeholder-mismatch
+
+# Exit code 0 = all good
+# Exit code 1 = validation errors found
+```
+
+---
+
+## 🤝 Contributing
+
+Contributions welcome! This project follows standard Python best practices.
+
+### Areas for contribution:
+- DeepL translation provider support
+- Azure Translator support
+- Custom terminology/glossary support
+- Translation memory (TM) integration
+- Improved placeholder validation
+- GUI improvements
+- Test coverage
+
+---
+
+## 📝 License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+Built with:
+- [deep-translator](https://github.com/nidhaloff/deep-translator) - Translation API wrapper
+- [lxml](https://lxml.de/) - Robust XML processing
+- Apple Xcode XLIFF format
+
+---
+
+## 📧 Contact & Support
+
+- **GitHub Issues**: [Report bugs or request features](https://github.com/EhsanAzish80/Auto-Translate-localizables/issues)
+- **Author**: Ehsan Azish
+- **Email**: ehsanazish80@gmail.com
+
+---
+
+## 🚀 Roadmap
+
+### Phase 2 - Automation (Next)
+- [ ] GitHub Action for automated translation
+- [ ] Pre-commit hook integration
+- [ ] Translation quality scoring
+
+### Phase 3 - Translation Quality
+- [ ] DeepL provider support
+- [ ] OpenAI GPT translation option
+- [ ] Per-language provider override
+- [ ] Custom terminology support
+
+### Phase 4 - Enterprise Features
+- [ ] Translation memory (TM) support
+- [ ] Terminology glossaries
+- [ ] Translation review workflow
+- [ ] Analytics and reporting
+
+---
+
+**Star ⭐ this repo if it saved you time!**
