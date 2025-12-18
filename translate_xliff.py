@@ -304,7 +304,7 @@ class XLIFFTranslator:
     
     def process_all_languages(self, skip_languages: List[str] = None, dry_run: bool = False):
         """Process all language folders in the workspace."""
-        skip_languages = skip_languages or ['en', 'ar', 'cs']  # Skip English and already done Arabic
+        skip_languages = skip_languages or ['en']  # Skip English source language only
         
         print(f"\n{'='*60}")
         print(f"XLIFF Bulk Translation")
@@ -369,8 +369,8 @@ def main():
     parser.add_argument('--dry-run', '-d', action='store_true',
                         help='Perform dry run without saving changes')
     parser.add_argument('--skip', '-s', nargs='+', 
-                        default=['en', 'ar'],
-                        help='Language codes to skip (default: en ar)')
+                        default=['en'],
+                        help='Language codes to skip (default: en)')
     parser.add_argument('--only', '-o', nargs='+',
                         help='Only process these language codes')
     
