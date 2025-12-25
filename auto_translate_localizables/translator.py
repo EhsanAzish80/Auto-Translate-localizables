@@ -236,7 +236,7 @@ class XLIFFTranslator:
             for unit in trans_units:
                 # Get source text
                 source = unit.find('xliff:source', ns)
-                if source is None or source.text is None:
+                if source is None or source.text is None or not source.text.strip():
                     continue
                 
                 source_text = source.text
@@ -256,13 +256,16 @@ class XLIFFTranslator:
                         source_index = list(unit).index(source)
                         target = ET.Element('target')
                         unit.insert(source_index + 1, target)
-                elif only_missing:
-                    # Skip if we're only doing missing strings and target exists
-                    continue
                 elif not target.text or target.text.strip() == '':
                     needs_translation = True
                 elif target.get('state') == 'needs-review-l10n':
                     needs_translation = True
+                elif only_missing and target.text and target.text.strip() == source_text.strip():
+                    # Target exists but is the same as source (untranslated) - needs translation
+                    needs_translation = True
+                elif only_missing:
+                    # Skip if we're only doing missing strings and target exists with different content
+                    continue
                 
                 if needs_translation:
                     # Translate
