@@ -13,17 +13,19 @@ import re
 from pathlib import Path
 from typing import Dict, List, Tuple
 import time
+import sys
 
 # Try to import translation library
 try:
     from deep_translator import GoogleTranslator
     TRANSLATOR_AVAILABLE = True
 except ImportError:
-    print("Installing deep-translator...")
-    import subprocess
-    subprocess.check_call(['pip3', 'install', 'deep-translator'])
-    from deep_translator import GoogleTranslator
-    TRANSLATOR_AVAILABLE = True
+    print("\n❌ ERROR: deep-translator is not installed")
+    print("\nPlease install required dependencies by running:")
+    print("  pip3 install deep-translator lxml")
+    print("\nOr in Terminal:")
+    print("  /Applications/Xcode.app/Contents/Developer/usr/bin/python3 -m pip install deep-translator lxml")
+    sys.exit(1)
 
 # Use lxml for better XLIFF handling if available, fallback to xml.etree
 try:
@@ -373,6 +375,8 @@ def main():
                         help='Language codes to skip (default: en)')
     parser.add_argument('--only', '-o', nargs='+',
                         help='Only process these language codes')
+    parser.add_argument('--only-missing', action='store_true',
+                        help='Only translate missing entries (default behavior, included for compatibility)')
     
     args = parser.parse_args()
     
